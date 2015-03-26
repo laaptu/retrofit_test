@@ -1,9 +1,12 @@
 package com.alchemisthq.retrofit.test;
 
+import com.alchemisthq.retrofit.MainActivity;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Response;
+
 import java.util.Map;
 
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
@@ -15,7 +18,6 @@ import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
 import retrofit.http.Path;
-import retrofit.mime.TypedFile;
 
 /**
  * Created by laaptu on 3/23/15.
@@ -32,14 +34,14 @@ public interface GeoApi {
     @POST("/post.php")
     public void postData(@Field("someString") String someString, Callback<String> callback);
 
-    @POST("/1iex3yb1")
+    @POST(MainActivity.ENDPOINT)
     public void postString(@Body String someString, Callback<Response> callback);
 
 
     //Field is used only with FormUrlEncoded
 
     @FormUrlEncoded
-    @POST("/1iex3yb1")
+    @POST(MainActivity.ENDPOINT)
     public void postFormData(@Field("username") String username, @Field("password") String password,
                              Callback<Response> callback);
 
@@ -47,14 +49,14 @@ public interface GeoApi {
     public void postPOJO(@Body GeoData geoData, Callback<Response> callback);
 
     @FormUrlEncoded
-    @POST("/1iex3yb1")
+    @POST(MainActivity.ENDPOINT)
     public void postHashMap(@FieldMap Map<String, Object> params, Callback<Response> callback);
 
     @Multipart
     @POST("/path")
     public void postMultipartData(@Header("auth_token") String authToken,
                                   @Part("title") String title,
-                                  @Part("request") TypedFile photo,
+                                  @Part("request") MediaType photo,
                                   Callback<Response> callback);
 
 
@@ -62,7 +64,7 @@ public interface GeoApi {
     @POST("/post")
     public void postMultipartDatum(@Header("auth_token") String authToken,
                                    @Part("title") String title,
-                                   @PartMap Map<String, TypedFile> fileMap,
+                                   @PartMap Map<String, MediaType> fileMap,
                                    Callback<Response> callback);
 
     @GET("/delay/{delaytime}")

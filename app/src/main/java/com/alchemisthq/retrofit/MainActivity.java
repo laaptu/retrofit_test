@@ -10,24 +10,19 @@ import android.view.View;
 import com.alchemisthq.retrofit.test.CustomCallbackInterface;
 import com.alchemisthq.retrofit.test.GeoApi;
 import com.alchemisthq.retrofit.test.GeoData;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import retrofit.Callback;
 import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
-import retrofit.android.MainThreadExecutor;
-import retrofit.client.Response;
-import retrofit.mime.TypedFile;
-import retrofit.mime.TypedInput;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -43,42 +38,45 @@ public class MainActivity extends ActionBarActivity {
         //somePostData();
         //postFormData();
         //postPOJO();
-        //postHashMap();
+        postHashMap();
         //postMultiPartData();
         //postMultiPartDatum();
         //postCancellableInterface();
-        cancelRequestTest();
+        //cancelRequestTest();
+
+
     }
 
 
     ExecutorService executorService;
     private static String URL_HTTPBIN = "http://httpbin.org";
     private static String URL_REQUESTBIN = "http://requestb.in";
+    public static final String ENDPOINT = "/10l957l1";
 
 
     private void cancelRequestTest() {
-        executorService = Executors.newCachedThreadPool();
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(URL_HTTPBIN).
-                setErrorHandler(errorHandler).setExecutors(executorService, new MainThreadExecutor()).build();
-        GeoApi geoApi = restAdapter.create(GeoApi.class);
-        geoApi.cancelRequestTest(5, new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Log.i("Some Response", "Some Response");
-                try {
-                    String out = getPostResponseAsString(response);
-                    System.out.println("Response  " + out);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
-
-            }
-        });
+//        executorService = Executors.newCachedThreadPool();
+//        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(URL_HTTPBIN).
+//                setErrorHandler(errorHandler).setExecutors(executorService, new MainThreadExecutor()).build();
+//        GeoApi geoApi = restAdapter.create(GeoApi.class);
+//        geoApi.cancelRequestTest(5, new Callback<Response>() {
+//            @Override
+//            public void success(Response response, Response response2) {
+//                Log.i("Some Response", "Some Response");
+//                try {
+//                    String out = getPostResponseAsString(response);
+//                    System.out.println("Response  " + out);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                error.printStackTrace();
+//
+//            }
+//        });
     }
 
     private ErrorHandler errorHandler = new ErrorHandler() {
@@ -163,54 +161,54 @@ public class MainActivity extends ActionBarActivity {
     };
 
     public void postMultiPartDatum() {
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://httpbin.org").build();
-        GeoApi geoApi = restAdapter.create(GeoApi.class);
-        String photoPath = "/storage/sdcard0/DCIM/Camera/me.jpg";
-        Map<String, TypedFile> multiFiles = new HashMap<String, TypedFile>();
-        multiFiles.put("FirstImage", new TypedFile("0", new File(photoPath)));
-        multiFiles.put("SecondImage", new TypedFile("1", new File(photoPath)));
-        geoApi.postMultipartDatum("Auth123456", "Photo Upload", multiFiles, new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-
-                Log.i("Some Response", "Some Response");
-                try {
-                    String out = getPostResponseAsString(response);
-                    System.out.println("Response  " + out);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
+//        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://httpbin.org").build();
+//        GeoApi geoApi = restAdapter.create(GeoApi.class);
+//        String photoPath = "/storage/sdcard0/DCIM/Camera/me.jpg";
+//        Map<String, TypedFile> multiFiles = new HashMap<String, TypedFile>();
+//        multiFiles.put("FirstImage", new TypedFile("0", new File(photoPath)));
+//        multiFiles.put("SecondImage", new TypedFile("1", new File(photoPath)));
+//        geoApi.postMultipartDatum("Auth123456", "Photo Upload", multiFiles, new Callback<Response>() {
+//            @Override
+//            public void success(Response response, Response response2) {
+//
+//                Log.i("Some Response", "Some Response");
+//                try {
+//                    String out = getPostResponseAsString(response);
+//                    System.out.println("Response  " + out);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//
+//            }
+//        });
     }
 
     public void postMultiPartData() {
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://httpbin.org").build();
-        GeoApi geoApi = restAdapter.create(GeoApi.class);
-
-        String photoPath = "/storage/sdcard0/DCIM/Camera/me.jpg";
-        geoApi.postMultipartData("1234", "Photo Title", new TypedFile("Photo", new File(photoPath)), new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Log.i("Some Response", "Some Response");
-                try {
-                    String out = getPostResponseAsString(response);
-                    System.out.println("Response  " + out);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
-            }
-        });
+//        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://httpbin.org").build();
+//        GeoApi geoApi = restAdapter.create(GeoApi.class);
+//
+//        String photoPath = "/storage/sdcard0/DCIM/Camera/me.jpg";
+//        geoApi.postMultipartData("1234", "Photo Title", new TypedFile("Photo", new File(photoPath)), new Callback<Response>() {
+//            @Override
+//            public void success(Response response, Response response2) {
+//                Log.i("Some Response", "Some Response");
+//                try {
+//                    String out = getPostResponseAsString(response);
+//                    System.out.println("Response  " + out);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                error.printStackTrace();
+//            }
+//        });
     }
 
     public void postHashMap() {
@@ -325,8 +323,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private String getPostResponseAsString(Response response) throws IOException {
-        TypedInput body = response.getBody();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(body.in()));
+        ResponseBody body = response.body();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(body.byteStream()));
         StringBuilder out = new StringBuilder();
         String newLine = System.getProperty("line.separator");
         String line;
