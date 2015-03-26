@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.alchemisthq.retrofit.test.CancellableCallback;
 import com.alchemisthq.retrofit.test.CustomCallbackInterface;
 import com.alchemisthq.retrofit.test.GeoApi;
 import com.alchemisthq.retrofit.test.GeoData;
@@ -47,7 +48,8 @@ public class MainActivity extends ActionBarActivity {
         //postMultiPartData();
         //postMultiPartDatum();
         //postCancellableInterface();
-        cancelRequestTest();
+        //cancelRequestTest();
+        cancellableCallbackTest();
     }
 
 
@@ -55,7 +57,38 @@ public class MainActivity extends ActionBarActivity {
     private static String URL_HTTPBIN = "http://httpbin.org";
     private static String URL_REQUESTBIN = "http://requestb.in";
 
+    private CancellableCallback<Response> cancellableCallback;
 
+    //https://github.com/square/retrofit/issues/367
+    private void cancellableCallbackTest() {
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(URL_HTTPBIN).build();
+        GeoApi geoApi = restAdapter.create(GeoApi.class);
+        Callback<Response> callback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Log.i("Some Response", "Some Response");
+                try {
+                    String out = getPostResponseAsString(response);
+                    System.out.println("Response  " + out);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+
+            }
+        };
+        cancellableCallback = new CancellableCallback<>(callback);
+        geoApi.cancelRequestTest(5, cancellableCallback);
+    }
+
+
+    //Didn't work as advertised
+    //
     private void cancelRequestTest() {
         executorService = Executors.newCachedThreadPool();
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(URL_HTTPBIN).
@@ -100,6 +133,10 @@ public class MainActivity extends ActionBarActivity {
         if (executorService != null) {
             executorService.shutdownNow();
             executorService = null;
+        }
+
+        if (cancellableCallback != null) {
+            cancellableCallback.cancel();
         }
     }
 
