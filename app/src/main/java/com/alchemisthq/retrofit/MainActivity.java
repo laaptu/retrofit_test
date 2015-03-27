@@ -49,7 +49,33 @@ public class MainActivity extends ActionBarActivity {
         //postMultiPartDatum();
         //postCancellableInterface();
         //cancelRequestTest();
-        cancellableCallbackTest();
+        //cancellableCallbackTest();
+        errorHandlerTest();
+    }
+
+    private void errorHandlerTest() {
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(URL_HTTPBIN).setErrorHandler(errorHandler).build();
+        GeoApi geoApi = restAdapter.create(GeoApi.class);
+        geoApi.testErrorHandler(418, new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Log.i("Some Response", "Some Response");
+                try {
+                    String out = getPostResponseAsString(response);
+                    System.out.println("Response  " + out);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error != null && error.getResponse() != null) {
+                    System.out.println("Handle error from error handler " + error.getResponse().getStatus());
+                }
+                error.printStackTrace();
+            }
+        });
     }
 
 
@@ -118,7 +144,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public Throwable handleError(RetrofitError cause) {
             System.out.println("Error Received");
-            return null;
+            return cause;
         }
     };
 

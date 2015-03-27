@@ -77,6 +77,9 @@ public interface GeoApi {
     public void cancelRequestTest(@Path("delaytime") int delayTime,
                                   CancellableCallback<Response> callback);
 
+    @GET("/status/{statuscode}")
+    public void testErrorHandler(@Path("statuscode") int statusCode, Callback<Response> callback);
+
 //    //You can use rx.java for sophisticated composition of requests
 //    @GET("/users/{user}")
 //    public Observable<SomeUserModel> fetchUser(@Path("user") String user);
